@@ -1,0 +1,765 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.95" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.95/virl.xsd">
+    <extensions>
+        <entry key="management_network" type="String">flat</entry>
+        <entry key="management_lxc" type="Boolean">true</entry>
+        <entry key="lxc.host.static_ip" type="String">10.5.5.149</entry>
+        <entry key="AutoNetkit.infrastructure_only" type="Boolean">true</entry>
+    </extensions>
+    <node name="PE1_MX1" type="ASSET" subtype="FLAT" location="168,272">
+        <extensions>
+            <entry key="host_network" type="String">flat1</entry>
+        </extensions>
+        <interface id="0" name="link0"/>
+        <interface id="1" name="link1"/>
+    </node>
+    <node name="PE2" type="SIMPLE" subtype="CSR1000v" location="353,178" ipv4="1.1.1.2">
+        <extensions>
+            <entry key="static_serial_port_0" type="Integer">4005</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="static_ip" type="String">10.5.5.11</entry>
+            <entry key="config" type="String">!
+! Last configuration change at 08:53:32 UTC Wed Mar 13 2019
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
+!
+hostname PE2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
+!
+aaa new-model
+!
+!
+aaa authentication login default local
+aaa authorization exec default local 
+!
+!
+!
+!
+!
+aaa session-id common
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
+ipv6 unicast-routing
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-3642849900
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-3642849900
+ revocation-check none
+ rsakeypair TP-self-signed-3642849900
+!
+crypto pki trustpoint TP-self-signed-473625020
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-473625020
+ revocation-check none
+ rsakeypair TP-self-signed-473625020
+!
+crypto pki trustpoint TP-self-signed-4256947876
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-4256947876
+ revocation-check none
+ rsakeypair TP-self-signed-4256947876
+!
+crypto pki trustpoint TP-self-signed-3910991715
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-3910991715
+ revocation-check none
+ rsakeypair TP-self-signed-3910991715
+!
+crypto pki trustpoint TP-self-signed-2675028188
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2675028188
+ revocation-check none
+ rsakeypair TP-self-signed-2675028188
+!
+crypto pki trustpoint TP-self-signed-638605817
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-638605817
+ revocation-check none
+ rsakeypair TP-self-signed-638605817
+!
+crypto pki trustpoint TP-self-signed-1491101663
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1491101663
+ revocation-check none
+ rsakeypair TP-self-signed-1491101663
+!
+!
+crypto pki certificate chain TP-self-signed-3642849900
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+crypto pki certificate chain TP-self-signed-473625020
+crypto pki certificate chain TP-self-signed-4256947876
+crypto pki certificate chain TP-self-signed-3910991715
+crypto pki certificate chain TP-self-signed-2675028188
+crypto pki certificate chain TP-self-signed-638605817
+crypto pki certificate chain TP-self-signed-1491101663
+!
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9HEEC5M1OVR
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+netconf-yang cisco-odm actions OSPF
+netconf-yang cisco-odm actions IPRoute
+netconf-yang cisco-odm actions Diffserv
+netconf-yang cisco-odm actions BFDNeighbors
+netconf-yang cisco-odm actions BridgeDomain
+netconf-yang cisco-odm actions VirtualService
+netconf-yang cisco-odm actions EthernetCFMStats
+netconf-yang cisco-odm actions MPLSLDPNeighbors
+netconf-yang cisco-odm actions MPLSStaticBinding
+netconf-yang cisco-odm actions MPLSForwardingTable
+netconf-yang
+!
+restconf
+!
+username cisco privilege 15 secret 5 $1$ladh$H7ueio0DEgbv2687tzJJG1
+username ansible privilege 15 secret 5 $1$6R25$ogHqPr3PoRQz4B4acQfDT.
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 1.1.1.2 255.255.255.255
+!
+interface GigabitEthernet1
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.5.5.11 255.255.255.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet2
+ description PE1
+ mtu 8000
+ ip address 172.16.2.82 255.255.255.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet2.100
+ description PE1
+ encapsulation dot1Q 100
+ ip address 5.0.0.5 255.255.255.254
+!
+interface GigabitEthernet3
+ description P2
+ mtu 8000
+ ip address 5.0.0.9 255.255.255.254
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet4
+ description CE1
+ ip address 6.0.0.2 255.255.255.254
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet5
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+router bgp 1
+ bgp router-id 1.1.1.2
+ bgp log-neighbor-changes
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 10.5.5.1
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ session-timeout 1440 
+ exec-timeout 1440 0
+ privilege level 15
+ transport input telnet ssh
+line vty 5 15
+!
+!
+!
+!
+!
+!
+end
+
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet2" ipv4="10.0.0.22" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet3" ipv4="10.0.0.26" netPrefixLenV4="30"/>
+        <interface id="2" name="GigabitEthernet4"/>
+        <interface id="3" name="GigabitEthernet5"/>
+    </node>
+    <node name="PE4" type="SIMPLE" subtype="IOS XRv" location="350,576" ipv4="1.1.1.1">
+        <extensions>
+            <entry key="static_serial_port_0" type="Integer">4004</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="static_ip" type="String">10.5.5.12</entry>
+            <entry key="config" type="String">!! IOS XR Configuration 6.1.3
+!! Last configuration change at Wed Mar 13 09:01:25 2019 by CVAC
+!
+hostname PE4
+group core
+ interface 'Gig.*0/0/0/.'
+  mtu 8000
+  ipv4 mtu 7986
+ !
+end-group
+service timestamps log datetime msec
+service timestamps debug datetime msec
+telnet vrf default ipv4 server max-servers 10
+telnet vrf Mgmt-intf ipv4 server max-servers 10
+domain name virl.info
+domain lookup disable
+username ansible
+ group netadmin
+ secret 5 $1$t4Lu$dVW3ZAbAh1sddL209Ff7Z0
+!
+aaa authentication login default local
+vrf Mgmt-intf
+ address-family ipv4 unicast
+ !
+ address-family ipv6 unicast
+ !
+!
+line console
+ exec-timeout 0 0
+!
+line default
+ exec-timeout 720 0
+ transport input telnet ssh
+!
+vty-pool default 0 50
+control-plane
+ management-plane
+  inband
+   interface all
+    allow all
+   !
+  !
+ !
+!
+interface Loopback0
+ description Loopback
+ ipv4 address 1.1.1.4 255.255.255.255
+!
+interface MgmtEth0/0/CPU0/0
+ description OOB Management
+ ! Configured on launch
+ vrf Mgmt-intf
+ ipv4 address 10.5.5.12 255.255.255.0
+!
+interface GigabitEthernet0/0/0/0
+ apply-group core
+ description GigabitEthernet0/0/0/0
+!
+interface GigabitEthernet0/0/0/0.102
+ ipv4 address 5.0.0.7 255.255.255.254
+ encapsulation dot1q 102
+!
+interface GigabitEthernet0/0/0/1
+ description GigabitEthernet0/0/0/1
+!
+interface GigabitEthernet0/0/0/2
+ shutdown
+!
+interface GigabitEthernet0/0/0/3
+ ipv4 address 5.0.0.8 255.255.255.254
+ shutdown
+!
+interface GigabitEthernet0/0/0/4
+ shutdown
+!
+route-policy bgp_in
+  pass
+end-policy
+!
+route-policy bgp_out
+  pass
+end-policy
+!
+router static
+ vrf Mgmt-intf
+  address-family ipv4 unicast
+   0.0.0.0/0 10.5.5.1
+  !
+ !
+!
+router bgp 1
+ bgp router-id 1.1.1.4
+!
+netconf-yang agent
+ ssh
+!
+ssh server v2
+ssh server vrf Mgmt-intf
+ssh server netconf vrf default
+ssh server netconf vrf Mgmt-intf
+ssh timeout 120
+ssh server session-limit 10
+end
+
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/0/0/0"/>
+        <interface id="1" name="GigabitEthernet0/0/0/1"/>
+        <interface id="2" name="GigabitEthernet0/0/0/2" ipv4="10.0.0.21" netPrefixLenV4="30"/>
+        <interface id="3" name="GigabitEthernet0/0/0/3" ipv4="10.0.0.14" netPrefixLenV4="30"/>
+        <interface id="4" name="GigabitEthernet0/0/0/4"/>
+    </node>
+    <node name="PE3_MX4" type="ASSET" subtype="FLAT" location="153,572">
+        <extensions>
+            <entry key="host_network" type="String">flat1</entry>
+        </extensions>
+        <interface id="0" name="link0"/>
+    </node>
+    <node name="CE1" type="SIMPLE" subtype="IOSv" location="518,175">
+        <extensions>
+            <entry key="static_ip" type="String">10.5.5.13</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="static_serial_port_0" type="Integer">4006</entry>
+            <entry key="config" type="String">!
+! Last configuration change at 09:15:30 UTC Wed Mar 13 2019
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname CE1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable password cisco
+!
+no aaa new-model
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+username cisco privilege 15 secret 5 $1$KTzK$wgy9XrhfGReuFUN9RD.cv1
+username ansible privilege 15 secret 5 $1$cUyq$CIqwzZipMb2jDgDSSxrM6.
+!
+redundancy
+!
+no cdp run
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 3.3.3.1 255.255.255.255
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.5.5.13 255.255.255.0
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description PE2
+ ip address 6.0.0.3 255.255.255.254
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description PE1_MX1
+ ip address 172.16.2.72 255.255.255.0
+ duplex full
+ speed auto
+ media-type rj45
+!
+router bgp 1
+ bgp router-id 3.3.3.1
+ bgp log-neighbor-changes
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 10.5.5.1
+ip ssh server algorithm encryption aes128-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr
+!
+ipv6 ioam timestamp
+!
+!
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+ password cisco
+line aux 0
+line vty 0 4
+ exec-timeout 720 0
+ privilege level 15
+ password cisco
+ login local
+ transport input telnet ssh
+!
+no scheduler allocate
+!
+end
+
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.5" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="SW0" type="SIMPLE" subtype="IOSvL2" location="267,767">
+        <extensions>
+            <entry key="static_serial_port_0" type="Integer">4002</entry>
+            <entry key="static_ip" type="String">10.5.5.10</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">!
+! Last configuration change at 09:26:43 UTC Wed Mar 13 2019 by cisco
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW0
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable password cisco
+!
+username ansible privilege 15 secret 5 $1$DO2N$Z9QoUcnYNI40w73cYpEAo1
+username cisco privilege 15 secret 5 $1$NDWZ$IEJsFPxYouZDBgirnxgV8/
+aaa new-model
+!
+!
+aaa authentication login default local
+aaa authorization exec default local 
+!
+!
+!
+!
+!
+!
+aaa session-id common
+!
+!
+!
+!
+!
+vtp domain virl.lab
+vtp mode transparent
+!
+!
+!
+no ip domain-lookup
+ip domain-name virl.info
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+no cdp run
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ no ip address
+!
+interface GigabitEthernet0/0
+ description OOB management
+ no switchport
+ vrf forwarding Mgmt-intf
+ ip address 10.5.5.10 255.255.255.0
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ description PE4
+ media-type rj45
+ negotiation auto
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 10.5.5.1
+!
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+ password cisco
+line aux 0
+line vty 0 4
+ session-timeout 1440 
+ exec-timeout 1440 0
+ privilege level 15
+ transport input telnet ssh
+line vty 5 15
+!
+!
+end
+
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+    </node>
+    <annotations>
+        <text x="210" y="204" fill="FE2C25">v100</text>
+        <text x="215" y="621" fill="FC2C25">v102</text>
+    </annotations>
+    <connection dst="/virl:topology/virl:node[1]/virl:interface[1]" src="/virl:topology/virl:node[2]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[4]/virl:interface[1]" src="/virl:topology/virl:node[3]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[2]/virl:interface[3]" src="/virl:topology/virl:node[5]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[2]/virl:interface[2]" src="/virl:topology/virl:node[3]/virl:interface[4]"/>
+    <connection dst="/virl:topology/virl:node[6]/virl:interface[1]" src="/virl:topology/virl:node[3]/virl:interface[2]"/>
+</topology>

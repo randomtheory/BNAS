@@ -1,0 +1,12 @@
+[junos]
+PE1
+PE3
+
+[iosxe]
+PE2
+
+[iosxr]
+PE4
+
+[ios]
+SW0
